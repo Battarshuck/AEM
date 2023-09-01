@@ -1,21 +1,20 @@
-const { logger } = require("./logger");
+const { logger } = require("../../common/logger");
 const AppError = require("./error/appError");
 
 /**
  * Centralised error handler.
  */
-class ErrorHandler{
-  constructor() {
-  }
+class ErrorHandler {
+	constructor() {}
 
-  /**
-   * Handle the raised error.
-   * @param {AppError | Error} error Error.
-   */
-  handleError(error){
-    logger.error(error);
+	/**
+	 * Handle the raised error.
+	 * @param {AppError | Error} error Error.
+	 */
+	handleError(error) {
+		logger.error(error);
 		crashIfErrorIsFatal(error.isFatal);
-  }
+	}
 }
 
 const crashIfErrorIsFatal = isFatal => {

@@ -1,0 +1,19 @@
+{
+	logger: {
+		Level: "info",
+	},
+	postgres: {
+		master: {
+			user: "postgres",
+			password: null,
+			database: "postgres",
+		},
+		aem: {
+			user: "aem-master",
+			password: "master p@ssword",
+			database: "aem",
+		},
+		host: null,
+		port: null,
+	},
+}
