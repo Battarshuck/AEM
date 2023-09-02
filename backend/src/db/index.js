@@ -1,12 +1,13 @@
 const { Pool } = require("pg");
 const { logger } = require("../common/logger");
+const config = require("config");
 
 const pool = new Pool({
-	user: config.get("postgres:aem:user"),
-	password: config.get("postgres:aem:password"),
-	database: config.get("postgres:aem:database"),
-	port: config.get("postgres:port"),
-	host: config.get("postgres:host"),
+	user: config.get("postgres.aem.user"),
+	password: config.get("postgres.aem.password"),
+	database: config.get("postgres.aem.database"),
+	port: config.get("postgres.port"),
+	host: config.get("postgres.host"),
 });
 
 const query = async (text, params) => {

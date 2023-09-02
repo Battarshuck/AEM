@@ -1,3 +1,4 @@
+const config = require("config");
 const winston = require("winston");
 const DailyRotateFile = require("winston-daily-rotate-file");
 
@@ -9,12 +10,11 @@ const sessionId = winston.format((info, opts) => {
 });
 
 const dailyRotateTransport = new DailyRotateFile({
-	level: "info",
 	filename: "aem-backend-%DATE%.log",
 	datePattern: "YYYY-MM-DD",
 	zippedArchive: true,
 	maxFiles: "21d",
-	dirname: "./logs",
+	dirname: config.get("logger.path"),
 	handleExceptions: true,
 	format: winston.format.combine(
 		winston.format.timestamp(),
@@ -25,8 +25,12 @@ const dailyRotateTransport = new DailyRotateFile({
 });
 
 const logger = winston.createLogger({
-	level: "http",
+	level: config.get("logger.level"),
 	transports: [dailyRotateTransport],
+	defaultMeta: {
+		application: config.get("application.name"),
+		service: config.get("application.service"),
+	},
 });
 
 const stream = {
@@ -48,14 +52,16 @@ if (process.env.NODE_ENV !== "production") {
 
 	logger.add(
 		new winston.transports.Console({
-			level: "debug",
 			format: winston.format.combine(
 				colorizeFormat,
 				winston.format.errors({ stack: true }),
 				sessionId(),
 				winston.format.timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
 				winston.format.printf(
-					info => `${info.timestamp} ${info.sessionId} ${info.message}`
+					info =>
+						`${info.timestamp} ${info.message} ${
+							info.stack ?? ""
+						}`
 				)
 			),
 			handleExceptions: true,

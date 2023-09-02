@@ -1,21 +1,14 @@
 const express = require("express");
 const session = require("express-session");
-const httpStatus = require("http-status");
 const morgan = require("morgan");
 const uuid = require("uuid");
 const { logger, stream } = require("./common/logger");
-const wrap = require("./common/asyncWrap");
-const commonErrors = require("./common/error/commonErrors");
-const userRouter = require("./components/user/user");
-const {
-	handler,
-	responder,
-	failSafeHandler,
-} = require("./middlewares/errorHandlingMiddleware");
-const AppError = require("./common/error/appError");
+const accountRoute = require("./components/account/routes");
+const errorHandlingMiddleware = require("./middlewares/errorHandlingMiddleware");
 
 const app = express();
 
+app.use(express.json());
 app.use(
 	session({
 		secret: "aem-backend",
@@ -34,8 +27,10 @@ app.use((req, res, next) => {
 });
 app.use(morgan("dev", { stream: stream }));
 
-app.use(handler);
-app.use(responder);
-app.use(failSafeHandler);
+app.use("/accounts", accountRoute);
+
+app.use(errorHandlingMiddleware.handler);
+app.use(errorHandlingMiddleware.responder);
+app.use(errorHandlingMiddleware.failSafeHandler);
 
 module.exports = app;

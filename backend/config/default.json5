@@ -1,7 +1,16 @@
 {
-	logger: {
-		Level: "info",
+	application:{
+		name: "Agens Enterprise Manager",
+		service: "Backend"
 	},
+
+	logger: {
+		level: "info",
+		// Default path to log files.
+		path: "./logs",
+	},
+
+	// Database-specific conigurations.
 	postgres: {
 		master: {
 			user: "postgres",

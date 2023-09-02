@@ -1,3 +1,11 @@
+# Node modules.
 node_modules/
+
+# Logs created by the application.
 logs/
+
+# VS Code configuration files.
 .vscode/
+
+# Local custom or deployment-specific configuration files.
+config/local*
