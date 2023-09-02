@@ -3,7 +3,7 @@ const session = require("express-session");
 const morgan = require("morgan");
 const uuid = require("uuid");
 const { logger, stream } = require("./common/logger");
-const accountRoute = require("./components/account/routes");
+const accountRoute = require("./components/account/v1/routes");
 const errorHandlingMiddleware = require("./middlewares/errorHandlingMiddleware");
 
 const app = express();
@@ -27,7 +27,7 @@ app.use((req, res, next) => {
 });
 app.use(morgan("dev", { stream: stream }));
 
-app.use("/accounts", accountRoute);
+app.use("/api/v1/accounts", accountRoute);
 
 app.use(errorHandlingMiddleware.handler);
 app.use(errorHandlingMiddleware.responder);

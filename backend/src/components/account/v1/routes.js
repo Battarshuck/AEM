@@ -1,8 +1,8 @@
 const router = require("express").Router();
 const accountController = require("./controller");
-const wrap = require("../../common/asyncWrap");
-const validate = require("../../middlewares/validationMiddleware");
-const validation = require("./v1/validation");
+const wrap = require("../../../common/asyncWrap");
+const validate = require("../../../middlewares/validationMiddleware");
+const validation = require("./validation");
 
 /**
  * Sign up.

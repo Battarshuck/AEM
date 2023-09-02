@@ -9,10 +9,14 @@ class ErrorHandler {
 
 	/**
 	 * Handle the raised error.
-	 * @param {AppError | Error} error Error.
+	 * @param {AppError | Error } error Error.
 	 */
 	handleError(error) {
-		logger.error(error.message, { name: error.name, stack: error.stack });
+		logger.error(error.message, {
+			name: error.name,
+			stack: error.stack,
+			errors: error.errors,	// For aggregate errors.
+		});
 		crashIfErrorIsFatal(error.isFatal);
 	}
 }
