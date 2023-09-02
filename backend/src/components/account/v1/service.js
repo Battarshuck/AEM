@@ -1,10 +1,10 @@
 const bcrypt = require("bcrypt");
 const httpStatus = require("http-status");
-const AuthenticationError = require("../../common/errors/authenticationError");
-const DatabaseError = require("../../common/errors/databaseError");
-const { logger } = require("../../common/logger");
-const { getSqlStmt } = require("../../common/sqlUtil");
-const { query } = require("../../db");
+const AuthenticationError = require("../../../common/errors/authenticationError");
+const DatabaseError = require("../../../common/errors/databaseError");
+const { logger } = require("../../../common/logger");
+const { getSqlStmt } = require("../../../common/sqlUtil");
+const { query } = require("../../../db");
 
 const person = [
 	{
