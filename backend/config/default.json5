@@ -1,0 +1,28 @@
+{
+	application:{
+		name: "Agens Enterprise Manager",
+		service: "Backend"
+	},
+
+	logger: {
+		level: "info",
+		// Default path to log files.
+		path: "./logs",
+	},
+
+	// Database-specific conigurations.
+	postgres: {
+		master: {
+			user: "postgres",
+			password: null,
+			database: "postgres",
+		},
+		aem: {
+			user: "aem-master",
+			password: "master p@ssword",
+			database: "aem",
+		},
+		host: null,
+		port: null,
+	},
+}
