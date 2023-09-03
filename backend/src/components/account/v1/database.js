@@ -61,6 +61,8 @@ class AccountDatabase {
 	 * @param {string} encryptedPassword Encrypted password for account.
 	 */
 	async insertAccount(email, username, encryptedPassword) {
+		logger.debug(`Inserting account for '${email}'`);
+
 		const sqlQuery = getSqlStmt(sqlPaths.identity.insertUser);
 		let values = [
 			email,
@@ -75,6 +77,28 @@ class AccountDatabase {
 		if (!result.rows[0]) {
 			throw new DatabaseError("Could not add user to the database.", false);
 		}
+
+		logger.debug("Account inserted");
+	}
+
+	/**
+	 * Get account by email.
+	 * @param {string} email Account email.
+	 * @returns The account if it exists, otherwise @see undefined.
+	 */
+	async getAccount(email) {
+		logger.debug(`Fetching account '${email}'`);
+
+		const sqlQuery = getSqlStmt(sqlPaths.identity.getUser);
+		let values = [email.toUpperCase()];
+
+		let result = await query(sqlQuery, values);
+
+    if (!result.rows[0]) {
+      logger.debug(`Email '${email}' does not exist`);
+    }
+    
+		return result.rows[0];
 	}
 }
 

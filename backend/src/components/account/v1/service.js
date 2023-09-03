@@ -1,7 +1,6 @@
 const bcrypt = require("bcrypt");
 const database = require("./database");
-const AuthenticationError = require("../../../common/errors/authenticationError");
-const ConflictError = require("../../../common/errors/conflictError");
+const error = require("../../../common/errors");
 const { logger } = require("../../../common/logger");
 
 /**
@@ -14,18 +13,26 @@ class AccountService {
 	 * and password.
 	 */
 	async createAccount(credentials) {
+		logger.info("Creating user account");
+
 		// Check if email or username already exists.
 		let exists = await database.usernameExists(credentials.username);
 		if (exists === true)
-			throw new ConflictError("Username is already in use.");
+			throw new error.ConflictError("Username is already in use.");
 
 		exists = await database.emailExists(credentials.email);
 		if (exists === true)
-			throw new ConflictError("Email is already in use.");
+			throw new error.ConflictError("Email is already in use.");
 
 		let encryptedPassword = await bcrypt.hash(credentials.password, 10);
 
-		await database.insertAccount(credentials.email, credentials.username, encryptedPassword);
+		await database.insertAccount(
+			credentials.email,
+			credentials.username,
+			encryptedPassword
+		);
+
+		logger.info("User account created");
 	}
 
 	/**
@@ -33,25 +40,26 @@ class AccountService {
 	 * @param {*} credentials User login credentials.
 	 */
 	async login(credentials) {
-		// TODO:Compare input credentials with data from the database.
-
-		var user = person.find(p => p.username == credentials.email);
+		logger.info(`Attempting to log in user '${credentials.email}'`);
+		var user = await database.getAccount(credentials.email);
 
 		if (!user) {
 			logger.error(
 				`User ${credentials.email} tried logging in. User not found`
 			);
-			throw new AuthenticationError();
+			throw new error.AuthenticationError();
 		}
 
-		if (credentials.password !== user.password) {
+		let authorised = await bcrypt.compare(credentials.password, user.password);
+		if (authorised === false) {
 			logger.error(
 				`User ${credentials.email} login failed; Incorrect password`
 			);
-			throw new AuthenticationError();
+			throw new error.AuthenticationError();
 		}
 
 		// TODO: Add session when user logs in successfully.
+		logger.info("Log in successful", { user: credentials.email });
 	}
 }
 
