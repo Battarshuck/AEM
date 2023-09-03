@@ -5,7 +5,6 @@ const DatabaseError = require("../../../common/errors/databaseError");
 const { logger } = require("../../../common/logger");
 const { getSqlStmt, sqlPaths } = require("../../../common/sqlUtil");
 const { query } = require("../../../db");
-const sqlPaths = require("../../../common/sqlPaths");
 
 const person = [
 	{
