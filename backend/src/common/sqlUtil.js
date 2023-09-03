@@ -17,6 +17,7 @@ const sqlPaths = {
 	aemUserExists: "aem-user-exists.sql",
 	createAemDatabase: "create-aem-database.sql",
 	createAemUser: "create-aem-user.sql",
+	createIdentityRelations: "create-identity-relations.sql",
 	insert: "insert.sql",
 };
 
