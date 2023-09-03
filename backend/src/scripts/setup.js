@@ -23,7 +23,7 @@ const aemClient = new Client({
 const aemDatabaseExists = async () => {
 	logger.debug("Checking if AEM database exists");
 
-	var sqlScript = getSqlStmt(sqlPaths.aemDatabaseExists);
+	var sqlScript = getSqlStmt(sqlPaths.setup.aemDatabaseExists);
 	logger.debug(`Executing ${sqlScript}`);
 
 	var result = await masterClient.query(sqlScript);
@@ -44,7 +44,7 @@ const aemDatabaseExists = async () => {
 const aemUserExists = async () => {
 	logger.debug("Checking if AEM user exists in PostgreSQL server");
 
-	var sqlScript = getSqlStmt(sqlPaths.aemUserExists);
+	var sqlScript = getSqlStmt(sqlPaths.setup.aemUserExists);
 	logger.debug(`Executing ${sqlScript}`);
 
 	var result = await masterClient.query(sqlScript);
@@ -63,7 +63,7 @@ const aemUserExists = async () => {
 const createAemDatabase = async () => {
 	logger.debug("Creating AEM database");
 
-	var sqlScript = getSqlStmt(sqlPaths.createAemDatabase);
+	var sqlScript = getSqlStmt(sqlPaths.setup.createAemDatabase);
 
 	await masterClient.query(sqlScript);
 	logger.debug("AEM database created");
@@ -72,7 +72,7 @@ const createAemDatabase = async () => {
 const createAemPostgresUser = async () => {
 	logger.debug("Creating AEM user for PostgreSQL");
 
-	var sqlScript = getSqlStmt(sqlPaths.createAemUser);
+	var sqlScript = getSqlStmt(sqlPaths.setup.createAemUser);
 
 	await masterClient.query(sqlScript);
 	logger.debug("AEM user created");
@@ -81,7 +81,7 @@ const createAemPostgresUser = async () => {
 const createAemIdentityRelations = async () => {
 	logger.debug("Creating AEM identity schema and tables");
 
-	var sqlScript = getSqlStmt(sqlPaths.createIdentityRelations);
+	var sqlScript = getSqlStmt(sqlPaths.setup.createIdentityRelations);
 	logger.debug(`Executing ${sqlScript}`);
 
 	await aemClient.query(sqlScript);
