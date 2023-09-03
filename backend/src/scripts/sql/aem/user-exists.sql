@@ -1,1 +1,1 @@
-SELECT 1 FROM pg_roles WHERE rolname = $1;
+SELECT COUNT(*) FROM pg_roles WHERE rolname = $1;
