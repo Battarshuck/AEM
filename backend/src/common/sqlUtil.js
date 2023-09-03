@@ -24,9 +24,9 @@ const sqlPaths = {
  * Returns the content of the SQL file.
  * @param {string} filepath Relative path of the SQL script from the root
  * folder for SQL scripts, `scripts/sql`.
- * @returns {Promise<string>}
+ * @returns {string}
  */
-const getSqlStmt = async filepath => {
+const getSqlStmt = filepath => {
 	let sqlPath = path.join(SQL_SCRIPT_BASE_PATH, filepath);
 
 	if (!fileSystem.existsSync(sqlPath))
@@ -36,7 +36,7 @@ const getSqlStmt = async filepath => {
 			false
 		);
 
-	return fileSystem.readFileSync(sqlPath);
+	return fileSystem.readFileSync(sqlPath, { encoding: "utf-8" });
 };
 
 module.exports = { getSqlStmt, SQL_SCRIPT_BASE_PATH, sqlPaths };
