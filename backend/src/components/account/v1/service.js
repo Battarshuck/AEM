@@ -1,21 +1,12 @@
 const bcrypt = require("bcrypt");
 const httpStatus = require("http-status");
+const { exist } = require("joi");
 const AuthenticationError = require("../../../common/errors/authenticationError");
+const ConflictError = require("../../../common/errors/conflictError");
 const DatabaseError = require("../../../common/errors/databaseError");
 const { logger } = require("../../../common/logger");
 const { getSqlStmt, sqlPaths } = require("../../../common/sqlUtil");
 const { query } = require("../../../db");
-
-const person = [
-	{
-		username: "emmallison13@gmail.com",
-		password: "password",
-	},
-	{
-		username: "emmallison@gmail.com",
-		password: "password",
-	},
-];
 
 /**
  * Service for account-related operations.
@@ -27,20 +18,30 @@ class AccountService {
 	 * and password.
 	 */
 	async createAccount(credentials) {
-		// TODO: Encrypt password using bcrypt and save it in the database.
-		const insertScript = await getSqlStmt(sqlPaths.insert);
+		// Check if email or username already exists.
+		let isAvailable = await this.#usernameIsAvailable(credentials.username);
+		if (isAvailable === false)
+			throw new ConflictError("Username is already in use.");
+
+		isAvailable = await this.#emailIsAvailable(credentials.email);
+		if (isAvailable === false)
+			throw new ConflictError("Email is already in use.");
+
+		let encryptedPassword = await bcrypt.hash(credentials.password, 10);
+
+		const sqlQuery = getSqlStmt(sqlPaths.identity.insertUser);
 		let values = [
-			"'accounts'",
-			"'email,password'",
-			`'${credentials.email}, '${credentials.password}'`,
+			credentials.email,
+			credentials.email.toUpperCase(),
+			credentials.username,
+			credentials.username.toUpperCase(),
+			encryptedPassword,
 		];
 
-		logger.debug(`Executing ${insertScript}`);
-
-		let result = await query(insertScript, values);
+		let result = await query(sqlQuery, values);
 
 		if (!result.rows[0]) {
-			throw new DatabaseError("Could not add user to the database", false);
+			throw new DatabaseError("Could not add user to the database.", false);
 		}
 	}
 
@@ -68,6 +69,42 @@ class AccountService {
 		}
 
 		// TODO: Add session when user logs in successfully.
+	}
+
+	async #usernameIsAvailable(username) {
+		logger.info(`Checking username '${username}' for availability`, {
+			username: username,
+		});
+
+		const sqlQuery = getSqlStmt(sqlPaths.identity.usernameExists);
+		let values = [username.toUpperCase()];
+
+		let result = await query(sqlQuery, values);
+
+		if (result.rows[0].count !== "0") {
+			logger.info("Username is not available");
+			return false;
+		}
+
+		logger.info("Username is available");
+		return true;
+	}
+
+	async #emailIsAvailable(email) {
+		logger.info(`Checking email '${email}' for availability`, { email: email });
+
+		const sqlQuery = getSqlStmt(sqlPaths.identity.emailExists);
+		let values = [email.toUpperCase()];
+
+		let result = await query(sqlQuery, values);
+
+		if (result.rows[0].count !== "0") {
+			logger.info("Email is not available");
+			return false;
+		}
+
+		logger.info("Email is available");
+		return true;
 	}
 }
 

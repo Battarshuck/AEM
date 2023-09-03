@@ -3,6 +3,6 @@ INSERT INTO identity.user (
   normalised_email,
   username,
   normalised_username,
-  password,
+  password
 )
 VALUES ($1, $2, $3, $4, $5) RETURNING *;

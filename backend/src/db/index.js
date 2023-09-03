@@ -10,11 +10,18 @@ const pool = new Pool({
 	host: config.get("postgres.host"),
 });
 
-const query = async (text, params) => {
+/**
+ * Execute a given SQL query.
+ * @param {string} queryText SQL query.
+ * @param {string} params Parameters to the SQL script, if any.
+ * @returns 
+ */
+const query = async (queryText, params) => {
 	const start = Date.now();
-	const res = await pool.query(text, params);
+	logger.debug(`Executing query:\n${queryText}`);
+	const res = await pool.query(queryText, params);
 	const duration = Date.now() - start;
-	logger.debug("Query executed", { text, duration, rows: res.rowCount });
+	logger.debug("Query executed", { text: queryText, duration, rows: res.rowCount });
 	return res;
 };
 
