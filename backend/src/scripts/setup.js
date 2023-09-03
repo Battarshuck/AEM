@@ -1,7 +1,6 @@
 const config = require("config");
 const { Client } = require("pg");
 const errorHandler = require("../common/errorHandler");
-const AppError = require("../common/errors/appError");
 const { logger } = require("../common/logger");
 const { sqlPaths, getSqlStmt } = require("../common/sqlUtil");
 
@@ -64,7 +63,7 @@ const createAemDatabase = async () => {
 
 const createAemPostgresUser = async () => {
 	logger.info("Creating AEM user for PostgreSQL");
-	
+
 	var sqlScript = getSqlStmt(sqlPaths.createAemUser);
 
 	var result = await masterClient.query(sqlScript);

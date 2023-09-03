@@ -8,7 +8,8 @@ const PORT = process.env.PORT || 3000;
 	await setup.setupDatabase();
 })().then(() => {
 	app.listen(PORT, () => {
-		// TODO: Use a better startup message here.
-		logger.info(`Backend server listening on http://localhost:${PORT}`);
+		logger.info(
+			`Agens Enterprise Manager server started. Listening on http://localhost:${PORT}`
+		);
 	});
 });
