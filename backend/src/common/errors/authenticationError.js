@@ -7,7 +7,6 @@ const httpStatus = require("http-status");
 class AuthenticationError extends AppError {
 	/**
 	 * Constructor.
-	 * @param {string | undefined} message Error message.
 	 */
 	constructor() {
 		super(httpStatus.UNAUTHORIZED, "Invalid email or password.", false);
