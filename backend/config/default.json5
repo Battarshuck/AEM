@@ -20,7 +20,7 @@
 			database: "postgres",
 		},
 		aem: {
-			user: "aem-master",
+			user: "aem",
 			password: "ma5teR-P@$$word",
 			database: "aem",
 		},

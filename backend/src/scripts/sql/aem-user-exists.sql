@@ -1,0 +1,1 @@
+SELECT COUNT(*) FROM pg_roles WHERE rolname = 'aem';
