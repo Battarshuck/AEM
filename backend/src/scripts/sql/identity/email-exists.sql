@@ -1,0 +1,1 @@
+SELECT COUNT(*) FROM identity.user WHERE normalised_email = $1;

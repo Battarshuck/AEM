@@ -13,11 +13,19 @@ const SQL_SCRIPT_BASE_PATH = path.join(__dirname, "../scripts/sql");
  * folder `scripts/sql`.
  */
 const sqlPaths = {
-	aemDatabaseExists: "aem-database-exists.sql",
-	aemUserExists: "aem-user-exists.sql",
-	createAemDatabase: "create-aem-database.sql",
-	createAemUser: "create-aem-user.sql",
-	insert: "insert.sql",
+	setup: {
+		aemDatabaseExists: "setup/aem-database-exists.sql",
+		aemUserExists: "setup/aem-user-exists.sql",
+		createAemDatabase: "setup/create-aem-database.sql",
+		createAemUser: "setup/create-aem-user.sql",
+		createIdentityRelations: "setup/create-identity-relations.sql",
+	},
+	identity: {
+		emailExists: "identity/email-exists.sql",
+		getUser: "identity/get-user.sql",
+		insertUser: "identity/insert-user.sql",
+		usernameExists: "identity/username-exists.sql",
+	},
 };
 
 /**

@@ -1,0 +1,1 @@
+SELECT * FROM identity.user WHERE normalised_email = $1;
