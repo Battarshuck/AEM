@@ -3,7 +3,7 @@ const httpStatus = require("http-status");
 const AuthenticationError = require("../../../common/errors/authenticationError");
 const DatabaseError = require("../../../common/errors/databaseError");
 const { logger } = require("../../../common/logger");
-const { getSqlStmt } = require("../../../common/sqlUtil");
+const { getSqlStmt, sqlPaths } = require("../../../common/sqlUtil");
 const { query } = require("../../../db");
 
 const person = [
@@ -28,7 +28,7 @@ class AccountService {
 	 */
 	async createAccount(credentials) {
 		// TODO: Encrypt password using bcrypt and save it in the database.
-		const insertScript = await getSqlStmt("create-account.sql");
+		const insertScript = await getSqlStmt(sqlPaths.insert);
 		let values = [
 			"'accounts'",
 			"'email,password'",

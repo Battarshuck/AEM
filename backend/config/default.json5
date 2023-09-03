@@ -1,7 +1,7 @@
 {
-	application:{
+	application: {
 		name: "Agens Enterprise Manager",
-		service: "Backend"
+		service: "Backend",
 	},
 
 	logger: {
@@ -12,14 +12,16 @@
 
 	// Database-specific conigurations.
 	postgres: {
+		// Super admin user for PostgreSQL.
 		master: {
 			user: "postgres",
 			password: null,
+			// Can be any database available on the host machine.
 			database: "postgres",
 		},
 		aem: {
-			user: "aem-master",
-			password: "master p@ssword",
+			user: "aem",
+			password: "ma5teR-P@$$word",
 			database: "aem",
 		},
 		host: null,
