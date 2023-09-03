@@ -20,7 +20,11 @@ const sqlPaths = {
 		createAemUser: "setup/create-aem-user.sql",
 		createIdentityRelations: "setup/create-identity-relations.sql",
 	},
-	insert: "insert.sql",
+	identity: {
+		emailExists: "identity/email-exists.sql",
+		insertUser: "identity/insert-user.sql",
+		usernameExists: "identity/username-exists.sql",
+	},
 };
 
 /**
