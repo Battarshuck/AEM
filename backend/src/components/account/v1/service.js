@@ -3,9 +3,9 @@ const httpStatus = require("http-status");
 const AuthenticationError = require("../../../common/errors/authenticationError");
 const DatabaseError = require("../../../common/errors/databaseError");
 const { logger } = require("../../../common/logger");
-const { getSqlStmt } = require("../../../common/sqlUtil");
+const { getSqlStmt, sqlPaths } = require("../../../common/sqlUtil");
 const { query } = require("../../../db");
-const sqlPaths = require("../../../common/sqlPaths")
+const sqlPaths = require("../../../common/sqlPaths");
 
 const person = [
 	{

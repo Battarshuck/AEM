@@ -9,6 +9,16 @@ const httpStatus = require("http-status");
 const SQL_SCRIPT_BASE_PATH = path.join(__dirname, "../scripts/sql");
 
 /**
+ * Contains the paths for all available SQL files relative to the root
+ * folder `scripts/sql`.
+ */
+const sqlPaths = {
+	insert: "insert.sql",
+	createAemDatabase: "aem/create-database.sql",
+	createAemUser: "aem/create-user.sql",
+};
+
+/**
  * Returns the content of the SQL file.
  * @param {string} filepath Relative path of the SQL script from the root
  * folder for SQL scripts, `scripts/sql`.
@@ -27,4 +37,4 @@ const getSqlStmt = async filepath => {
 	return fileSystem.readFileSync(sqlPath);
 };
 
-module.exports = { getSqlStmt, SQL_SCRIPT_BASE_PATH };
+module.exports = { getSqlStmt, SQL_SCRIPT_BASE_PATH, sqlPaths };
