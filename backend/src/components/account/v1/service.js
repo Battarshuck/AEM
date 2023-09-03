@@ -5,6 +5,7 @@ const DatabaseError = require("../../../common/errors/databaseError");
 const { logger } = require("../../../common/logger");
 const { getSqlStmt } = require("../../../common/sqlUtil");
 const { query } = require("../../../db");
+const sqlPaths = require("../../../common/sqlPaths")
 
 const person = [
 	{
@@ -28,7 +29,7 @@ class AccountService {
 	 */
 	async createAccount(credentials) {
 		// TODO: Encrypt password using bcrypt and save it in the database.
-		const insertScript = await getSqlStmt("create-account.sql");
+		const insertScript = await getSqlStmt(sqlPaths.insert);
 		let values = [
 			"'accounts'",
 			"'email,password'",
