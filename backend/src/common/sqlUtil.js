@@ -24,6 +24,7 @@ const sqlPaths = {
 		emailExists: "identity/email-exists.sql",
 		getUser: "identity/get-user.sql",
 		insertUser: "identity/insert-user.sql",
+		insertUserLogin: "identity/insert-user-login.sql",
 		usernameExists: "identity/username-exists.sql",
 	},
 };

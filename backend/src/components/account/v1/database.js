@@ -75,10 +75,32 @@ class AccountDatabase {
 		let result = await query(sqlQuery, values);
 
 		if (!result.rows[0]) {
-			throw new DatabaseError("Could not add user to the database.", false);
+			throw new DatabaseError("Could not add account to the database.", false);
 		}
 
 		logger.debug("Account inserted");
+	}
+
+	/**
+	 * Insert login audit for an account when a user logs in.
+	 * @param {number} id Account ID.
+	 */
+	async insertAccountLogin(id) {
+		logger.debug(`Inserting login audit`, { accountId: id });
+
+		const sqlQuery = getSqlStmt(sqlPaths.identity.insertUserLogin);
+		let values = [id];
+
+		let result = await query(sqlQuery, values);
+
+		if (!result.rows[0]) {
+			throw new DatabaseError(
+				"Could not add login audit to the database.",
+				false
+			);
+		}
+
+		logger.debug("Login audit inserted");
 	}
 
 	/**
@@ -94,10 +116,10 @@ class AccountDatabase {
 
 		let result = await query(sqlQuery, values);
 
-    if (!result.rows[0]) {
-      logger.debug(`Email '${email}' does not exist`);
-    }
-    
+		if (!result.rows[0]) {
+			logger.debug(`Email '${email}' does not exist`);
+		}
+
 		return result.rows[0];
 	}
 }

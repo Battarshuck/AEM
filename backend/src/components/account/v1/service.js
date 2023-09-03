@@ -58,6 +58,9 @@ class AccountService {
 			throw new error.AuthenticationError();
 		}
 
+		// Add login audit to the database.
+		await database.insertAccountLogin(user.id);
+		
 		// TODO: Add session when user logs in successfully.
 		logger.info("Log in successful", { user: credentials.email });
 	}
