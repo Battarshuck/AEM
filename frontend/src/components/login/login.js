@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate,Link } from 'react-router-dom';
-import axios from 'axios';
+import axios from '../../requests/axios'
 import Logo from '../logo/logo';
+import routes from '../../requests/routes';
+import localRoutes from '../../localRoutes/localRoutes';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -16,7 +18,7 @@ const Login = () => {
     // Construct the API endpoint and data to be sent
     const credentials = { email: email, password: password };
     try {
-      const response = await axios.post("http://localhost:3000/login", credentials);
+      const response = await axios.post(routes.logIn, credentials);
     //   navigate("/test");
       setIsLogged(false);
     } catch (error) {
@@ -48,7 +50,7 @@ const Login = () => {
                       </div> */}
                       <button onClick={handleFormSubmit} type="submit" className="w-full text-black bg-slate-100 hover:bg-slate-300 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Sign in</button>
                       <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                          Don’t have an account yet? <Link to="/signup" className="font-medium text-primary-600 hover:underline dark:text-primary-500">Sign up</Link>                       
+                          Don’t have an account yet? <Link to={localRoutes.signUp} className="font-medium text-primary-600 hover:underline dark:text-primary-500">Sign up</Link>                       
                       </p>
                   </form>
               </div>

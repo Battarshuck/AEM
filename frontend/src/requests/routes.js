@@ -1,5 +1,6 @@
 const routes = {
-    login: "/api/v1/accounts/login",
+    logIn: "/api/v1/accounts/login",
+    signUp: "/api/v1/accounts",
 }
 
 export default routes

@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import axios from '../../requests/axios';
 import { useNavigate  } from 'react-router-dom';
 import Logo from '../logo/logo';
+import routes from '../../requests/routes';
+import localRoutes from '../../localRoutes/localRoutes';
 
 
 const SignUp = () => {
@@ -23,15 +25,16 @@ const SignUp = () => {
             return;
         }
         setAllFilled(true);
-
+        
+        // Check if passwords match
         if(!passwordMatch) {
             return;
         }
         // Construct the API endpoint and data to be sent
         const credentials = { username: username, password: password, email: email};
         try {
-            const response = await axios.post("http://localhost:3000/signup", credentials);
-            navigate("/login");
+            const response = await axios.post(routes.signUp, credentials);
+            navigate(localRoutes.logIn);
             setIsSignedUp(true);
         } catch (error) {
             setIsSignedUp(false);
