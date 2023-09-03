@@ -72,6 +72,8 @@ const createAemPostgresUser = async () => {
 
 const setupDatabase = async () => {
 	logger.info("Beginning AEM database setup");
+
+	// Connect to database.
 	try {
 		logger.info("Connecting to the master database as superadmin", {
 			database: config.get("postgres.master.database"),
@@ -87,20 +89,22 @@ const setupDatabase = async () => {
 		errorHandler.handleError(error);
 	}
 
-	let dbExists = await aemDatabaseExists();
-	if (dbExists === false) {
+	// Create AEM user if it doens't exist.
+	let userExists = await aemUserExists();
+	if (userExists === false) {
 		try {
-			await createAemDatabase();
+			await createAemPostgresUser();
 		} catch (error) {
 			error.isFatal = true;
 			errorHandler.handleError(error);
 		}
 	}
 
-	let userExists = await aemUserExists();
-	if (userExists === false) {
+	// Create AEM database if it doesn't exist.
+	let dbExists = await aemDatabaseExists();
+	if (dbExists === false) {
 		try {
-			await createAemPostgresUser();
+			await createAemDatabase();
 		} catch (error) {
 			error.isFatal = true;
 			errorHandler.handleError(error);
