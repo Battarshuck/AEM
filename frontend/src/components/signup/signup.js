@@ -31,7 +31,7 @@ const SignUp = () => {
             return;
         }
         // Construct the API endpoint and data to be sent
-        const credentials = { username: username, password: password, email: email};
+        const credentials = { username: username, password: password, repeatPassword: password,email: email};
         try {
             const response = await axios.post(routes.signUp, credentials);
             navigate(localRoutes.logIn);
