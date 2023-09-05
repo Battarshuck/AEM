@@ -1,3 +1,4 @@
+const cors = require("cors");
 const express = require("express");
 const session = require("express-session");
 const morgan = require("morgan");
@@ -8,6 +9,7 @@ const errorHandlingMiddleware = require("./middlewares/errorHandlingMiddleware")
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 app.use(
 	session({
