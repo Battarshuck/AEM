@@ -110,22 +110,22 @@ const setupDatabase = async () => {
 		errorHandler.handleError(error);
 	}
 
-	// Create AEM user if it doens't exist.
-	let userExists = await aemUserExists();
-	if (userExists === false) {
+	// Create AEM database if it doesn't exist.
+	let dbExists = await aemDatabaseExists();
+	if (dbExists === false) {
 		try {
-			await createAemPostgresUser();
+			await createAemDatabase();
 		} catch (error) {
 			error.isFatal = true;
 			errorHandler.handleError(error);
 		}
 	}
 
-	// Create AEM database if it doesn't exist.
-	let dbExists = await aemDatabaseExists();
-	if (dbExists === false) {
+	// Create AEM user if it doens't exist.
+	let userExists = await aemUserExists();
+	if (userExists === false) {
 		try {
-			await createAemDatabase();
+			await createAemPostgresUser();
 		} catch (error) {
 			error.isFatal = true;
 			errorHandler.handleError(error);
