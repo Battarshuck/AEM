@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import EmailValidator from 'email-validator';
 import axios from '../../requests/axios';
 import { useNavigate  } from 'react-router-dom';
 import Logo from '../logo/logo';
@@ -11,6 +12,7 @@ const SignUp = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
+    const [validEmail, setValidEmail] = useState(true); 
     const [passwordMatch, setPasswordMatch] = useState(true);
     const [isSignedUp, setIsSignedUp] = useState(true);
     const [allFilled, setAllFilled] = useState(true);
@@ -25,6 +27,12 @@ const SignUp = () => {
             return;
         }
         setAllFilled(true);
+
+        // Check if email is valid
+        if (!EmailValidator.validate(email)) {
+            setValidEmail(false);
+            return;
+        }
         
         // Check if passwords match
         if(!passwordMatch) {
@@ -59,6 +67,7 @@ const SignUp = () => {
                     <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                         Join us now!
                     </h1>
+                    {!validEmail && <p className="text-red-700">Invalid email format</p>}
                     {!allFilled && <p className="text-red-700">Please fill all fields</p>}
                     {!isSignedUp && <p className="text-red-700">Username is already used</p>}
                     <form className="space-y-4 md:space-y-6" action="#">
