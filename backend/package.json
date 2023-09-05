@@ -6,7 +6,7 @@
   "scripts": {
     "test": "mocha",
     "start": "node src/server.js",
-    "start:dev": "npx nodemon --watch src --delay 4000ms --exec \"clear && node\" src/server.js"
+    "start:dev": "npx nodemon --watch src --delay 4000ms src/server.js"
   },
   "author": "",
   "license": "Apache-2.0",
