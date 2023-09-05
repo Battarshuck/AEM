@@ -1,0 +1,1 @@
+CREATE USER aem WITH ENCRYPTED PASSWORD 'ma5teR-P@$$word';

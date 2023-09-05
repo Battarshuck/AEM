@@ -1,21 +1,7 @@
 const bcrypt = require("bcrypt");
-const httpStatus = require("http-status");
-const AuthenticationError = require("../../../common/errors/authenticationError");
-const DatabaseError = require("../../../common/errors/databaseError");
+const database = require("./database");
+const error = require("../../../common/errors");
 const { logger } = require("../../../common/logger");
-const { getSqlStmt } = require("../../../common/sqlUtil");
-const { query } = require("../../../db");
-
-const person = [
-	{
-		username: "emmallison13@gmail.com",
-		password: "password",
-	},
-	{
-		username: "emmallison@gmail.com",
-		password: "password",
-	},
-];
 
 /**
  * Service for account-related operations.
@@ -27,21 +13,26 @@ class AccountService {
 	 * and password.
 	 */
 	async createAccount(credentials) {
-		// TODO: Encrypt password using bcrypt and save it in the database.
-		const insertScript = await getSqlStmt("create-account.sql");
-		let values = [
-			"'accounts'",
-			"'email,password'",
-			`'${credentials.email}, '${credentials.password}'`,
-		];
+		logger.info("Creating user account");
 
-		logger.debug(`Executing ${insertScript}`);
+		// Check if email or username already exists.
+		let exists = await database.usernameExists(credentials.username);
+		if (exists === true)
+			throw new error.ConflictError("Username is already in use.");
 
-		let result = await query(insertScript, values);
+		exists = await database.emailExists(credentials.email);
+		if (exists === true)
+			throw new error.ConflictError("Email is already in use.");
 
-		if (!result.rows[0]) {
-			throw new DatabaseError("Could not add user to the database", false);
-		}
+		let encryptedPassword = await bcrypt.hash(credentials.password, 10);
+
+		await database.insertAccount(
+			credentials.email,
+			credentials.username,
+			encryptedPassword
+		);
+
+		logger.info("User account created");
 	}
 
 	/**
@@ -49,25 +40,29 @@ class AccountService {
 	 * @param {*} credentials User login credentials.
 	 */
 	async login(credentials) {
-		// TODO:Compare input credentials with data from the database.
-
-		var user = person.find(p => p.username == credentials.email);
+		logger.info(`Attempting to log in user '${credentials.email}'`);
+		var user = await database.getAccount(credentials.email);
 
 		if (!user) {
 			logger.error(
 				`User ${credentials.email} tried logging in. User not found`
 			);
-			throw new AuthenticationError();
+			throw new error.AuthenticationError();
 		}
 
-		if (credentials.password !== user.password) {
+		let authorised = await bcrypt.compare(credentials.password, user.password);
+		if (authorised === false) {
 			logger.error(
 				`User ${credentials.email} login failed; Incorrect password`
 			);
-			throw new AuthenticationError();
+			throw new error.AuthenticationError();
 		}
 
+		// Add login audit to the database.
+		await database.insertAccountLogin(user.id);
+		
 		// TODO: Add session when user logs in successfully.
+		logger.info("Log in successful", { user: credentials.email });
 	}
 }
 
